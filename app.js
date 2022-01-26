@@ -64,6 +64,6 @@ app.use(function(err, req, res, next) {
 //     `Server running on port ${PORT}`
 //   )
 // )
-console.log(app.get("port"))
-app.listen(process.env.PORT||3000,()=>console.log(`server started at ${process.env.PORT}`));
+// console.log(app.get("port"))
+app.listen(process.env.PORT,()=>console.log(`server started at ${process.env.PORT}`));
 module.exports = app;
