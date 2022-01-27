@@ -1,11 +1,11 @@
 var express = require('express')
 const { protect } = require('../middleware/authMiddleware');
 var {
-  //   getBloodRequest,
-    postBloodStore
-  //   putBloodRequest,
-  //   deleteBloodRequest,
-  } = require('../modules/bloodStore')
+  getBloodStore,
+  putBloodStore,
+  deleteBloodStore,
+  postBloodStore
+} = require('../modules/bloodStore')
 var {
   getBloodStore,
  
@@ -15,4 +15,6 @@ var {
 const router = express.Router()
 router.get("/",getBloodStore);
 router.post("/",protect, postBloodStore);
+router.put('/:id',protect, putBloodStore)
+router.delete('/:id',protect, deleteBloodStore)
 module.exports = router;
