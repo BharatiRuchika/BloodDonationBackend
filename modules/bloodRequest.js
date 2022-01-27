@@ -1,4 +1,4 @@
-// import asyncHandler from 'express-async-handler'
+const asyncHandler = require('express-async-handler');
 const BloodRequestModel = require('../Models/bloodRequest');
 
 exports.getBloodRequest = async (req, res) => {
@@ -75,58 +75,58 @@ const rbc = req.body.rbc
   }
 }
 
-// export const putBloodRequest = asyncHandler(async (req, res) => {
-//   const user = req.user.id
-//   const patient_id = req.body.patient_id.toUpperCase()
-//   const patient_name = req.body.patient_name
-//   const blood_group = req.body.blood_group
-//   const plasma = req.body.plasma
-//   const platelet = req.body.platelet
-//   const rbc = req.body.rbc
-//   const wb = req.body.wb
+exports.putBloodRequest = asyncHandler(async (req, res) => {
+  const user = req.user._id;
+  const patient_id = req.body.patient_id.toUpperCase()
+  const patient_name = req.body.patient_name
+  const blood_group = req.body.blood_group
+  const plasma = req.body.plasma
+  const platelet = req.body.platelet
+  const rbc = req.body.rbc
+  const wb = req.body.wb
 
-//   if (plasma === '' && platelet === '' && rbc === '' && wb === '') {
-//     res.status(400)
-//     throw new Error('Blood Component is required')
-//   }
+  if (plasma === '' && platelet === '' && rbc === '' && wb === '') {
+    res.status(400)
+    throw new Error('Blood Component is required')
+  }
 
-//   const bloodRequestFields = {
-//     user,
-//     patient_id,
-//     patient_name,
-//     blood_group,
-//   }
-//   const bloodComponentFields = {
-//     plasma,
-//     platelet,
-//     rbc,
-//     wb,
-//   }
+  const bloodRequestFields = {
+    user,
+    patient_id,
+    patient_name,
+    blood_group,
+  }
+  const bloodComponentFields = {
+    plasma,
+    platelet,
+    rbc,
+    wb,
+  }
 
-//   bloodRequestFields.blood_component = bloodComponentFields
+  bloodRequestFields.blood_component = bloodComponentFields
 
-//   let bloodRequest = await BloodRequestModel.findOneAndUpdate(
-//     { _id: req.params.id },
-//     { $set: bloodRequestFields }
-//   )
+  let bloodRequest = await BloodRequestModel.findOneAndUpdate(
+    { _id: req.params.id },
+    { $set: bloodRequestFields }
+  )
 
-//   if (bloodRequest) {
-//     res.status(201).json(bloodRequest)
-//   } else {
-//     res.status(400)
-//     throw new Error('Internal Server Error')
-//   }
-// })
+  if (bloodRequest) {
+    res.status(201).json(bloodRequest)
+  } else {
+    res.status(400)
+    throw new Error('Internal Server Error')
+  }
+})
 
-// export const deleteBloodRequest = asyncHandler(async (req, res) => {
-//   const bloodRequest = await BloodRequestModel.findOneAndRemove({
-//     _id: req.params.id,
-//   })
+exports.deleteBloodRequest = asyncHandler(async (req, res) => {
+  const bloodRequest = await BloodRequestModel.findOneAndRemove({
+    _id: req.params.id,
+  })
 
-//   if (bloodRequest) {
-//     res.json(bloodRequest)
-//   } else {
-//     res.status(400)
-//     throw new Error('Invalid ID')
-//   }
-// })
+  if (bloodRequest) {
+    res.json(bloodRequest)
+  } else {
+    res.status(400)
+    throw new Error('Invalid ID')
+  }
+})

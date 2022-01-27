@@ -16,11 +16,10 @@ const userScheme = mongoose.Schema(
       type: String,
       required: true,
     },
-    isAdmin: {
-      type: Boolean,
-      required: true,
-      default: false,
-    },
+    role:{
+      type:Boolean,
+      default:false
+  }
   },
   {
     timestamps: true,
@@ -38,5 +37,6 @@ userScheme.pre("save", async function (next) {
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
 });
+
 
 module.exports = mongoose.model("User", userScheme,"Users");

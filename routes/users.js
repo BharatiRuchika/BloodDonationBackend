@@ -8,6 +8,7 @@ const user = require("../modules/users");
 //   res.send('respond with a resource');
 // });
 router.post("/login",user.authUser);
+router.post('/',user.registerUser);
 router.get('/log',user.logHistory)
 router.get("/profile",protect, user.getUserProfile)
 router.put("/profile",protect, user.updateUserProfile)

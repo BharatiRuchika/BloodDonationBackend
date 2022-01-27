@@ -25,7 +25,7 @@ exports.protect = async (req, res, next) => {
 }
 
 exports.admin = (req, res, next) => {
-  if (req.user && req.user.isAdmin) {
+  if (req.user && req.user.role) {
     next()
   } else {
     res.status(401)

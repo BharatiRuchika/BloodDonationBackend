@@ -36,7 +36,7 @@ exports.authUser = async (req, res) => {
         _id: user._id,
         name: user.name,
         email: user.email,
-        isAdmin: user.isAdmin,
+        isAdmin: user.role,
         token: generateToken(user._id),
       })
     } else {
@@ -52,7 +52,7 @@ exports.authUser = async (req, res) => {
         _id: user._id,
         name: user.name,
         email: user.email,
-        isAdmin: user.isAdmin,
+        isAdmin: user.role,
       })
     } else {
       res.status(404)
@@ -76,7 +76,7 @@ exports.authUser = async (req, res) => {
         _id: updatedUser._id,
         name: updatedUser.name,
         email: updatedUser.email,
-        isAdmin: updatedUser.isAdmin,
+        isAdmin: updatedUser.role,
         token: generateToken(updatedUser._id),
       })
     } else {
@@ -119,6 +119,9 @@ exports.authUser = async (req, res) => {
   })
   
   exports.updateUser = asyncHandler(async (req, res) => {
+    console.log("im in update user");
+    console.log("id",req.params.id);
+    console.log("body",req.body);
     const user = await User.findById(req.params.id)
   
     if (req.params.id == req.user._id) {
@@ -129,7 +132,7 @@ exports.authUser = async (req, res) => {
     if (user) {
       user.name = req.body.name || user.name
       user.email = req.body.email.toLowerCase() || user.email
-      user.isAdmin = req.body.isAdmin
+      user.role = req.body.isAdmin
       if (req.body.password) {
         user.password = req.body.password
       }
@@ -140,10 +143,40 @@ exports.authUser = async (req, res) => {
         _id: updatedUser._id,
         name: updatedUser.name,
         email: updatedUser.email,
-        isAdmin: updatedUser.isAdmin,
+        isAdmin: updatedUser.role,
       })
     } else {
       res.status(404)
       throw new Error('User not found')
+    }
+  })
+
+
+  exports.registerUser = asyncHandler(async (req, res) => {
+    const { name, email, password } = req.body
+    const userExist = await User.findOne({ email })
+    if (userExist) {
+      res.status(400)
+      throw new Error('User already exist')
+    }
+  
+    const user = await User.create({
+      name,
+      email,
+      password
+      
+    })
+  
+    if (user) {
+      res.status(201).json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        isAdmin: user.role,
+        token: generateToken(user._id),
+      })
+    } else {
+      res.status(400)
+      throw new Error('Invalid user data')
     }
   })
